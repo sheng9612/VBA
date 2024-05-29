@@ -1,0 +1,24 @@
+Sub exportPicture()
+    Dim shp As Shape
+    
+     Range("D2").Select
+    Selection.Copy
+    Range("F3").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    
+    For Each shp In ActiveSheet.Shapes
+    x = x + 1
+    shp.Select
+    Application.Selection.CopyPicture
+    With ActiveSheet.ChartObjects.Add(0, 0, shp.Width * 1, shp.Height * 1).Chart
+    .ChartArea.Select
+    .Paste
+    .Export ThisWorkbook.Path & "\pic\" & shp.TopLeftCell.Offset(0, -1) & ".jpg"
+    .Parent.Delete
+    End With
+    Next
+    'MsgBox x & "pic finish"
+
+    
+End Sub
